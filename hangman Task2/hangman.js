@@ -26,6 +26,7 @@ function init() {
     drawBoard();
     drawLetters();
     drawMessages();
+    drawHangman();
     startGame();
 }
 
@@ -110,6 +111,7 @@ function onLetterClick(e) {
     var txt = btn.txt;
     btn.removeEventListener('click', onLetterClick);
     checkForMatches(txt);
+    drawHangman();
     checkGame();
 }
 
@@ -143,19 +145,114 @@ function checkForMatches(txt) {
 function checkGame() {
     if (lettersNeeded == 0) {
         win = true;
-        gameOver();
+        //createjs.Ticker.paused = true;
+        this.setTimeout(this.gameOver(), 3000); 
+        setTimeout(function() {
+            gameOver()
+            }, 3000);  
     } else if (lives == 0) {
         win = false;
-        gameOver();
+       //createjs.Ticker.paused = true; 
+        setTimeout(function() {
+            gameOver()
+            }, 3000);
     }
 }
 
 function drawHangman(){
     
+    var gallows = new createjs.Shape();   
+    gallows.graphics.beginStroke('#000');
+    gallows.graphics.moveTo(400,180);
+    gallows.graphics.lineTo(470,180);
+    gallows.graphics.moveTo(435,180);
+    gallows.graphics.lineTo(435,70);
+    gallows.graphics.lineTo(460,70);
+    gallows.graphics.endStroke();
+    stage.addChild(gallows);
+
+    //gallows.visible = false;
+
+    var rope = new createjs.Shape();
+    rope.graphics.beginStroke('#000');
+    rope.graphics.moveTo(460,70);
+    rope.graphics.lineTo(460,100);
+    stage.addChild(rope);
+    
+    if (lives <= 4){
+        rope.visible = true;
+    }else{
+        rope.visible = false;
+    }
+
+    var head = new createjs.Shape();
+    head.graphics.beginStroke('#000');
+    head.graphics.beginFill('#FFFFFF');
+    //head.graphics.moveTo(460,100);
+    head.graphics.drawCircle(0, 0, 10);
+    head.x = 460;
+    head.y = 110;
+    head.graphics.endStroke();
+    stage.addChild(head);
+    head.visible = false;
+    if (lives <= 3){
+        head.visible = true;
+    }else{
+        head.visible = false;
+    }
+
+    var torso = new createjs.Shape();
+    torso.graphics.beginStroke('#000');
+    torso.graphics.moveTo(460,120);
+    torso.graphics.lineTo(460,150);
+    stage.addChild(torso);
+    torso.visible = false;
+    if (lives <= 2){
+        torso.visible = true;
+    }else{
+        torso.visible = false;
+    }
+
+    var hands = new createjs.Shape();
+    hands.graphics.beginStroke('#000');
+    hands.graphics.moveTo(445,130);
+    hands.graphics.lineTo(475,130);
+    stage.addChild(hands);
+    hands.visible = false;
+    if (lives <= 1){
+        hands.visible = true;
+    }else{
+        hands.visible = false;
+    }
+
+    var feet = new createjs.Shape();
+    feet.graphics.beginStroke('#000');
+    feet.graphics.moveTo(450,170);
+    feet.graphics.lineTo(460,150);
+    feet.graphics.lineTo(470,170);
+    stage.addChild(feet);
+    feet.visible = false;
+    if (lives <= 0){
+        feet.visible = true;
+    }else{
+        feet.visible = false;
+    }
+    
+}
+
+function checkHangman(){
+    switch(lives){
+        case 4:
+            drawHangman().rope = visible;
+        break;
+        default:
+            break;
+    }
 }
 
 function gameOver() {
     stage.removeAllChildren();
+    
     var msg = win ? "YOU WIN!" : "YOU LOSE";
     gameOverTxt = new createjs.Text(msg, "36px Arial");
     gameOverTxt.color = win ? 'blue' : 'red';
