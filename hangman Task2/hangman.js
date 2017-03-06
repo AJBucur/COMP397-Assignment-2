@@ -150,6 +150,10 @@ function checkGame() {
     }
 }
 
+function drawHangman(){
+    
+}
+
 function gameOver() {
     stage.removeAllChildren();
     var msg = win ? "YOU WIN!" : "YOU LOSE";
@@ -167,4 +171,6 @@ function startGame() {
     createjs.Ticker.addEventListener("tick", function(e) {
         stage.update();
     });
+
+
 }
