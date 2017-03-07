@@ -252,7 +252,6 @@ function checkHangman(){
 
 function gameOver() {
     stage.removeAllChildren();
-    
     var msg = win ? "YOU WIN!" : "YOU LOSE";
     gameOverTxt = new createjs.Text(msg, "36px Arial");
     gameOverTxt.color = win ? 'blue' : 'red';

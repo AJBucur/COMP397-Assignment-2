@@ -99,11 +99,11 @@ function buildShapes() {
     var circleSlot = new createjs.Shape();
     circleSlot.graphics.beginStroke('#FF0');
     circleSlot.graphics.beginFill('#FFFFFF');
-    circleSlot.graphics.drawCircle(50, 50, 50);
+    circleSlot.graphics.drawCircle(50, 0, 50);
     circleSlot.x = 320;
-    circleSlot.y = 250;
+    circleSlot.y = 300;
     circleSlot.key = 1;
-    //circleSlot.regX = circle.regY = 50;
+    circleSlot.regX = circle.regY = 50;
     stage.addChild(circleSlot);
     slots.push(circleSlot);
 
@@ -133,7 +133,7 @@ function setShapes() {
         r = Math.floor(Math.random() * shapes.length);
         shape = shapes[r];
         shape.homeY = 70;
-        shape.homeX = (i * 130) + 100;
+        shape.homeX = (i * 150) + 100;
         shape.y = shape.homeY;
         shape.x = shape.homeX;
         shape.addEventListener("mousedown", startDrag);
@@ -150,9 +150,8 @@ function startGame() {
 }
 function startDrag(e) {
     var shape = e.target;
-    console.log(shape.key);
     var slot = slots[shape.key];
-    console.log(slot.key);
+    
     stage.setChildIndex(shape, stage.getNumChildren() - 1);
     stage.addEventListener('stagemousemove', function (e) {
         shape.x = e.stageX;
@@ -181,6 +180,14 @@ function startDrag(e) {
 }
 function checkGame(){
     if(score == 3){
-        alert('You Win!');
+        stage.removeAllChildren();
+        var msg = "CONGRATULATIONS! \n\n\n YOU WIN!";
+        gameOverTxt = new createjs.Text(msg, "40px Century Gothic");
+        gameOverTxt.color = 'blue';
+        gameOverTxt.textAlign = 'center';
+        gameOverTxt.textBaseline = 'middle';
+        gameOverTxt.x = stage.canvas.width / 2;
+        gameOverTxt.y = stage.canvas.height / 3;
+        stage.addChild(gameOverTxt);
     }
 }
