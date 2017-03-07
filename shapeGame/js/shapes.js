@@ -24,7 +24,7 @@ function init() {
 function buildShapes() {
     var colors = ['blue', 'red', 'green', 'yellow'];
     var i, shape, slot;
-    for (i = 0; i < 4; i++) {
+    /*for (i = 0; i < 4; i++) {
         //slots
         slot = new createjs.Shape();
         slot.graphics.beginStroke(colors[i]);
@@ -43,15 +43,96 @@ function buildShapes() {
         shape.regX = shape.regY = 50;
         shape.key = i;
         shapes.push(shape);
-    }
+    }*/
+
+    //RECTANGLE
+    var rect = new createjs.Shape();
+    rect.graphics.beginStroke('#000');
+    rect.graphics.beginFill('#FF0000');
+    rect.graphics.drawRect(0, 0, 150, 100);
+  //  rect.x = rect.y = 20;
+    rect.key = 0;
+    rect.regX = 75;
+    rect.regY = 50;
+    //stage.addChild(rectangle);
+    shapes.push(rect);
+
+    var circle = new createjs.Shape();
+    circle.graphics.beginStroke('#000');
+    circle.graphics.beginFill('#FFF000');
+    circle.graphics.drawCircle(50, 50, 50);
+   // circle.x = 250;
+   // circle.y = 100;
+    circle.key = 1;
+    circle.regX = circle.regY = 50;
+    //stage.addChild(circle);
+    shapes.push(circle);
+
+    //TRIANGLE
+    var tri = new createjs.Shape();
+    tri.graphics.beginStroke('#000');
+    tri.graphics.beginFill('#00FF00');
+    tri.graphics.moveTo(50, 0)
+            .lineTo(0, 100)
+            .lineTo(100, 100)
+            .lineTo(50, 0);
+    //tri.x = 400;
+    //tri.y = 50;
+    tri.key = 2;
+    tri.regX = tri.regY = 50;
+    //stage.addChild(tri);
+    shapes.push(tri);
+
+    //RECTANGLE
+    var rectSlot = new createjs.Shape();
+    rectSlot.graphics.beginStroke('#F00');
+    rectSlot.graphics.beginFill('#FFFFFF');
+    rectSlot.graphics.drawRect(0, 0, 150, 100);
+    rectSlot.x = 150
+    rectSlot.y = 300;
+    rectSlot.key = 0;
+    rectSlot.regX = 75;
+    rectSlot.regY = 50;
+    stage.addChild(rectSlot);
+    slots.push(rectSlot);
+
+    var circleSlot = new createjs.Shape();
+    circleSlot.graphics.beginStroke('#FF0');
+    circleSlot.graphics.beginFill('#FFFFFF');
+    circleSlot.graphics.drawCircle(50, 50, 50);
+    circleSlot.x = 320;
+    circleSlot.y = 250;
+    circleSlot.key = 1;
+    //circleSlot.regX = circle.regY = 50;
+    stage.addChild(circleSlot);
+    slots.push(circleSlot);
+
+    //TRIANGLE
+    var triSlot = new createjs.Shape();
+    triSlot.graphics.beginStroke('#0F0');
+    triSlot.graphics.beginFill('#FFFFFF');
+    triSlot.graphics.moveTo(50, 0)
+            .lineTo(0, 100)
+            .lineTo(100, 100)
+            .lineTo(50, 0);
+    triSlot.x = 470;
+    triSlot.y = 300;
+    triSlot.key = 2;
+    triSlot.regX = triSlot.regY = 50;
+    triSlot.addEventListener("click", function(e){
+        console.log(triSlot.key);
+    });
+    stage.addChild(triSlot);
+    slots.push(triSlot);
 }
 function setShapes() {
     var i, r, shape;
     var l = shapes.length;
+    
     for (i = 0; i < l; i++) {
         r = Math.floor(Math.random() * shapes.length);
         shape = shapes[r];
-        shape.homeY = 320;
+        shape.homeY = 70;
         shape.homeX = (i * 130) + 100;
         shape.y = shape.homeY;
         shape.x = shape.homeX;
@@ -60,6 +141,7 @@ function setShapes() {
         shapes.splice(r, 1);
     }
 }
+
 function startGame() {
     createjs.Ticker.setFPS(60);
     createjs.Ticker.addEventListener("tick", function (e) {
@@ -68,7 +150,9 @@ function startGame() {
 }
 function startDrag(e) {
     var shape = e.target;
+    console.log(shape.key);
     var slot = slots[shape.key];
+    console.log(slot.key);
     stage.setChildIndex(shape, stage.getNumChildren() - 1);
     stage.addEventListener('stagemousemove', function (e) {
         shape.x = e.stageX;
@@ -77,6 +161,13 @@ function startDrag(e) {
     stage.addEventListener('stagemouseup', function (e) {
         stage.removeAllEventListeners();
         var pt = slot.globalToLocal(stage.mouseX, stage.mouseY);
+        console.log(pt.x);
+        console.log(pt.y);
+
+        console.log(slot.x);
+        console.log(slot.y);
+        console.log(slot.hitTest(pt.x, pt.y));
+
         if (slot.hitTest(pt.x, pt.y)) {
             shape.removeEventListener("mousedown",startDrag);
             score++;
@@ -89,7 +180,7 @@ function startDrag(e) {
     });
 }
 function checkGame(){
-    if(score == 4){
+    if(score == 3){
         alert('You Win!');
     }
 }
